@@ -938,4 +938,126 @@
     <p>© 2026 AI TOOLS. All rights reserved.</p>
     <p>Designed and developed by Netha Manoj.</p>
   </footer>
-  
+   <!-- JAVASCRIPT -->
+
+  <script>
+    /* MOBILE MENU */
+
+    const menuBtn = document.getElementById("menuBtn");
+    const sideMenu = document.getElementById("sideMenu");
+
+    menuBtn.addEventListener("click", function () {
+      const isOpen = sideMenu.classList.toggle("open");
+
+      menuBtn.textContent = isOpen ? "✕" : "☰";
+      menuBtn.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    /* CLOSE MENU WHEN LINK IS CLICKED */
+
+    document.querySelectorAll(".side-menu a").forEach(link => {
+      link.addEventListener("click", function () {
+        sideMenu.classList.remove("open");
+        menuBtn.textContent = "☰";
+        menuBtn.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    /* CLOSE MENU WHEN CLICKING OUTSIDE */
+
+    document.addEventListener("click", function (event) {
+      if (
+        !sideMenu.contains(event.target) &&
+        !menuBtn.contains(event.target)
+      ) {
+        sideMenu.classList.remove("open");
+        menuBtn.textContent = "☰";
+        menuBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    /* SEARCH APPLICATIONS */
+
+    const searchInput = document.getElementById("appSearch");
+    const appCards = document.querySelectorAll(".app-card");
+    const emptyMessage = document.getElementById("emptyMessage");
+
+    searchInput.addEventListener("input", function () {
+      const searchValue = this.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      appCards.forEach(card => {
+        const searchableText =
+          (card.dataset.name || card.textContent).toLowerCase();
+
+        const matches = searchableText.includes(searchValue);
+
+        card.style.display = matches ? "" : "none";
+
+        if (matches) {
+          visibleCount++;
+        }
+      });
+
+      emptyMessage.style.display =
+        visibleCount === 0 ? "block" : "none";
+    });
+
+    /* STAR RATING */
+
+    const starButtons = document.querySelectorAll("#stars button");
+    const ratingMessage = document.getElementById("ratingMessage");
+
+    let selectedRating = Number(
+      localStorage.getItem("trueframeRating") || 0
+    );
+          updateStars();
+
+    starButtons.forEach(button => {
+      button.addEventListener("click", function () {
+        selectedRating = Number(this.dataset.rating);
+
+        localStorage.setItem(
+          "trueframeRating",
+          String(selectedRating)
+        );
+
+        updateStars();
+
+        ratingMessage.textContent =
+          "Your " + selectedRating +
+          "-star rating is saved on this device.";
+      });
+    });
+
+    /* FEEDBACK EMAIL */
+
+    document.getElementById("feedbackBtn")
+      .addEventListener("click", function () {
+
+        const feedback = document
+          .getElementById("feedbackText")
+          .value.trim();
+
+        if (!feedback) {
+          alert("Please enter your feedback first.");
+          return;
+        }
+
+        const subject = encodeURIComponent("TrueFrame Feedback");
+
+        const body = encodeURIComponent(
+          "Hello Manoj,\n\nMy feedback about TrueFrame:\n\n" +
+          feedback +
+          "\n\nThank you."
+        );
+
+        window.location.href =
+          "mailto:nethamanoj36@gmail.com?subject=" +
+          subject + "&body=" + body;
+      });
+  </script>
+
+</body>
+</html>
+
